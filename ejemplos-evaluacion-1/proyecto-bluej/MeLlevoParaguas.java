@@ -24,6 +24,5 @@ public class MeLlevoParaguas
         System.out.println( "hoy:" + llueveHoy + "  ayer:" + llovioAyer + "  anteayer:" + llovioAnteayer );
         System.out.println( "paraguas:" + paraguas );
         System.out.println( "chubasquero:" + chubasquero );
-
     }
 }
