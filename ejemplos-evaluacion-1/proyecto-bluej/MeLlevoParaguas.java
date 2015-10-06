@@ -1,3 +1,4 @@
+import java.util.*;
 
 /**
  * Write a description of class MeLlevoParaguas here.
@@ -8,9 +9,15 @@
 public class MeLlevoParaguas
 {
     public static void main( String args[] ){
+        
+        Scanner in = new Scanner(System.in);
 
-        // DATOS, LOS CAMBIO PARA PROBAR CASOS
-        boolean llueveHoy = true;
+        System.out.println( "___________________________" );
+
+        // DATOS
+        System.out.print( "Dime si llueve hoy:" );
+        
+        boolean llueveHoy = Boolean.parseBoolean(in.nextLine());
         boolean llovioAyer = false;
         boolean llovioAnteayer = true;
 
@@ -20,7 +27,6 @@ public class MeLlevoParaguas
         boolean paraguas = (llueveHoy || llovioAyer) && !chubasquero;
 
         // MIRO LO QUE SALE
-        System.out.println( "___________________________" );
         System.out.println( "hoy:" + llueveHoy + "  ayer:" + llovioAyer + "  anteayer:" + llovioAnteayer );
         System.out.println( "paraguas:" + paraguas );
         System.out.println( "chubasquero:" + chubasquero );
