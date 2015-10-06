@@ -15,6 +15,6 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 9D6D8F6BC857C906
 
 
 
-
-sudo apt-get install build-essential linux-headers-$(uname -r)
-sudo apt-get install virtualbox-guest-x11
+# CAMBIADO sources.list Y QUITADO ftp.es...
+#sudo apt-get install build-essential linux-headers-$(uname -r)
+apt-get install virtualbox-guest-x11
