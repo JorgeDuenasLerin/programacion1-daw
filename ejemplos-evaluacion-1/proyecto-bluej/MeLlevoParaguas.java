@@ -11,15 +11,20 @@ public class MeLlevoParaguas
     public static void main( String args[] ){
         
         Scanner in = new Scanner(System.in);
+        
+        //un cambio
 
         System.out.println( "___________________________" );
 
         // DATOS
         System.out.print( "Dime si llueve hoy:" );
-        
         boolean llueveHoy = Boolean.parseBoolean(in.nextLine());
-        boolean llovioAyer = false;
-        boolean llovioAnteayer = true;
+        
+        System.out.print( "Dime si llueve ayer:" );
+        boolean llovioAyer = Boolean.parseBoolean(in.nextLine());
+        
+        System.out.print( "Dime si llueve anteayer:" );
+        boolean llovioAnteayer = Boolean.parseBoolean(in.nextLine());
 
         // CUENTAS CON LOS DATOS, ESTO NO CAMBIA CUANDO CAMBIEN LOS DATOS
         // usando !, &&, ||, (, )
