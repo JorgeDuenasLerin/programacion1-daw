@@ -14,8 +14,9 @@ public class NombreAlReves
        }
        String nombre = args[0];
        
-       System.out.println( "El nombre es:" + nombre );
+       System.out.println( "El nombre es inicial es:" + nombre );
        
+       System.out.print( "El nombre al revés es:" );
        for( int i = 0 ; i < nombre.length() ; i += 1 ){
            System.out.print( nombre.charAt(nombre.length() - i - 1) );
        }
