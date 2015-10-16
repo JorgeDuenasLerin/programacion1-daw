@@ -1,13 +1,25 @@
 import java.util.*;
 
+
+
+
+
+/*
+ * Un comentario no javadoc
+ */
 /**
- * Write a description of class ElMasGrande here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Esta clase es un programa que calcula en número más grande de los introducidos por teclado
+ * 
+ * @author Álvaro
+ * @version 1.0
  */
 public class ElMasGrande
 {
+    /**
+     * Este es el método main. 
+     * Se llama al principio.
+     */
     public static void main( String args[] ){
         Scanner scan = new Scanner(System.in);
 
