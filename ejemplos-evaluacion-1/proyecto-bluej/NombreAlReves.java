@@ -22,4 +22,4 @@ public class NombreAlReves
        }
        System.out.println( );
    }
-}1
+}
