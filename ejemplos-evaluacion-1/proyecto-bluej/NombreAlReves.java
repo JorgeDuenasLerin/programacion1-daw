@@ -9,12 +9,6 @@ public class NombreAlReves
 {
     public static void main( String args[] ){
 
-        new String("").valueOf("hola");
-        String.valueOf("hola");
-        
-        "".length();
-        String.length();
-        
         
         if( args.length < 1 ){
             System.out.println( "Uso: <nombre al que dar la vuelta>" );
