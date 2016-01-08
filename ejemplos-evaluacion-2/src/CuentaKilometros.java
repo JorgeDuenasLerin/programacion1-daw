@@ -15,7 +15,7 @@ public class CuentaKilometros {
 	public int getKilometrosParcial() {
 		return pasarAKilometrosEnteros(distanciaParcialEnMetros);
 	}
-
+	
 	/**
 	 * 
 	 * @return 0 a 9
@@ -54,26 +54,82 @@ public class CuentaKilometros {
 				getHectometrosParcial());
 	}
 
+	public CuentaKilometros( int km, int hm ){
+		if( hm < 0 || hm > 9 ){
+			throw new IllegalArgumentException("hm mal:" + hm);
+		}
+		if( km < 0 ){
+			throw new IllegalArgumentException("km mal:" + km);
+		}
+		distanciaTotalEnMetros = km*1000 + hm*100;
+	}
+
+	public CuentaKilometros(){
+		this(0,0);
+	}
+
+	public boolean esMenorQue(CuentaKilometros c) {
+		return comparar(this,c) == -1;
+	}
+
+	public boolean esMayorQue(CuentaKilometros c) {
+		return comparar(this,c) == 1;
+	}
+
+	public boolean esIgualQue(CuentaKilometros c) {
+		return comparar(this,c) == 0;
+	}
+
+	public static int comparar(CuentaKilometros c1, CuentaKilometros c2){
+		double diferencia = c1.distanciaTotalEnMetros - c2.distanciaTotalEnMetros;
+		return (int) Math.signum(diferencia);
+		/*
+		if( diferencia > 0 )
+			return 1;
+		else if( diferencia < 0 ){
+			return -1;
+		}
+		else{
+			return 0;
+		}
+		*/
+	}
+
+	
 	public static void main(String[] args) {
-		CuentaKilometros cm = new CuentaKilometros();
+		CuentaKilometros cm1 = new CuentaKilometros(123,9);
 
-		System.out.println(cm.datosComoString());
+		System.out.println(cm1.datosComoString());
 		
-		cm.avanza(1);
+		cm1.avanza(1);
 		
-		System.out.println(cm.datosComoString());
+		System.out.println(cm1.datosComoString());
 
-		cm.avanza(99);
-		System.out.println(cm.datosComoString());
+		cm1.avanza(99);
+		System.out.println(cm1.datosComoString());
 		
-		cm.inicializarParcial();
-		System.out.println(cm.datosComoString());
+		cm1.inicializarParcial();
+		System.out.println(cm1.datosComoString());
 
-		cm.avanza(1099);
-		System.out.println(cm.datosComoString());
+		cm1.avanza(1099);
+		System.out.println(cm1.datosComoString());
 
-		cm.avanza(1);
-		System.out.println(cm.datosComoString());
+		cm1.avanza(1);
+		System.out.println(cm1.datosComoString());
+		
+		CuentaKilometros cm2 = new CuentaKilometros();
+		System.out.println( comparar(cm1, cm2) );
+
+		CuentaKilometros cm3 = new CuentaKilometros();
+		System.out.println( comparar(cm3, cm2) );
+
+		CuentaKilometros cm4 = new CuentaKilometros(1,0);
+		System.out.println( comparar(cm3, cm4) );
+		
+		if( cm4.esMenorQue( cm3 ) ){
+			
+		}
 
 	}
+
 }
