@@ -2,26 +2,52 @@ package swing;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JMenuBar;
-import javax.swing.JTabbedPane;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JLabel;
-import java.awt.GridLayout;
-import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.TreeModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VentanaRendimiento extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -211,7 +237,202 @@ public class VentanaRendimiento extends JFrame {
 		
 		
 		
+		DefaultListModel<String> procesos = new DefaultListModel<>();
+		for( String s: new String[] {"Excel", "Word", "Eclipse", "Spotify"} ){
+			procesos.addElement(s);
+		}
+		for( String s: new String[] {"Excel", "Word", "Eclipse", "Spotify"} ){
+			procesos.addElement(s);
+		}
+		for( String s: new String[] {"Excel", "Word", "Eclipse", "Spotify"} ){
+			procesos.addElement(s);
+		}
+		for( String s: new String[] {"Excel", "Word", "Eclipse", "Spotify"} ){
+			procesos.addElement(s);
+		}
+		for( String s: new String[] {"Excel", "Word", "Eclipse", "Spotify"} ){
+			procesos.addElement(s);
+		}
+		for( String s: new String[] {"Excel", "Word", "Eclipse", "Spotify"} ){
+			procesos.addElement(s);
+		}
+		for( String s: new String[] {"Excel", "Word", "Eclipse", "Spotify"} ){
+			procesos.addElement(s);
+		}
+		procesos.addListDataListener( new ListDataListener() {
+			
+			@Override
+			public void intervalRemoved(ListDataEvent e) {
+				System.out.println(e);
+				
+			}
+			
+			@Override
+			public void intervalAdded(ListDataEvent e) {
+				System.out.println(e);
+				
+			}
+			
+			@Override
+			public void contentsChanged(ListDataEvent e) {
+				System.out.println(e);
+				
+			}
+		});
+		
+		JList list = new JList();
+		list.setModel(procesos);
+		JScrollPane scrollPane = new JScrollPane(list);
+		
+		JList list2 = new JList();
+		list2.setModel(list.getModel());
+		JScrollPane scrollPane2 = new JScrollPane(list2);
+		
+		JSplitPane splitPane = new JSplitPane();
+		splitPane.setRightComponent(scrollPane);
+		splitPane.setLeftComponent(scrollPane2);
+		
+		JPanel tabDeProcesos = new JPanel();
+		tabDeProcesos.setLayout( new BorderLayout() );
+		tabDeProcesos.add(splitPane,BorderLayout.CENTER);
+		
+		JButton  matarProceso = new JButton("Matar proceso");
+		matarProceso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int index = list.getSelectedIndex();
+				if( index == -1 ){
+					System.out.println("No mato nada, no hay seleccionado");
+					return;
+				}
+				DefaultListModel model = (DefaultListModel) list.getModel();
+				model.remove(index);
+				
+			}
+		});
+		tabDeProcesos.add( matarProceso, BorderLayout.SOUTH );
+		
+		tabbedPane.addTab("LISTA de procesos", null, tabDeProcesos, null);
+		
+		JPanel panel_5 = new JPanel();
+		tabbedPane.addTab("TABLA de procesos", null, panel_5, null);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		panel_5.add(scrollPane_1);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{"word", "1", "32"},
+				{"excel", "2", "1324"},
+				{"eclipse", "3", "1324"},
+				{"java", "4", "134"},
+				{"java", "5", null},
+			},
+			new String[] {
+				"Nombre de imagen", "CPU", "Memoria"
+			}
+		));
+		scrollPane_1.setViewportView(table);
+		
+		JPanel panel_6 = new JPanel();
+		tabbedPane.addTab("New tab", null, panel_6, null);
+		panel_6.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		JSplitPane splitDeArbol = new JSplitPane();
+		panel_6.add(splitDeArbol);
+		
+		splitDeArbol.setLeftComponent(scrollPane_2);
+		
+		JEditorPane editor = new JEditorPane();
+		splitDeArbol.setRightComponent(new JScrollPane(editor));
+		
+		JTree tree = new JTree();
+		tree.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if( e.getClickCount() == 2 ){
+					File f = (File) tree.getSelectionPath().getLastPathComponent();
+					System.out.println("Me han hecho doble click en:" + f );
+					try{
+						FileInputStream in = new FileInputStream(f);
+						Reader reader = new InputStreamReader(in);
+						StringBuffer b = new StringBuffer();
+						int c = reader.read();
+						while( c != -1 ){
+							b.append((char)c);
+							c = reader.read();
+						}
+						editor.setText(b.toString());
+					}
+					catch( IOException ex ){
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent e) {
+				System.out.println("Seleccionado el fichero:" + e.getPath().getLastPathComponent() );
+			}
+		});
+		tree.setModel( new TreeModelDeFicheros() );
+		scrollPane_2.setViewportView(tree);
+		
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.SOUTH);
 	}
+	
+	
+	private class TreeModelDeFicheros implements TreeModel{
+
+		@Override
+		public Object getRoot() {
+			return new File("C:/");
+		}
+
+		@Override
+		public Object getChild(Object parent, int index) {
+			File f = (File) parent;
+			File[] files = f.listFiles();
+			return files[index];
+		}
+
+		@Override
+		public int getChildCount(Object parent) {
+			File f = (File) parent;
+			File[] files = f.listFiles();
+			if( files == null ){
+				return 0;
+			}
+			return files.length;
+		}
+
+		@Override
+		public boolean isLeaf(Object node) {
+			return getChildCount(node) == 0;
+		}
+
+		@Override
+		public void valueForPathChanged(TreePath path, Object newValue) {
+			System.out.println("No soportado:" + path );
+			
+		}
+
+		@Override
+		public int getIndexOfChild(Object parent, Object child) {
+			return 0;
+		}
+
+		@Override
+		public void addTreeModelListener(TreeModelListener l) {
+		}
+
+		@Override
+		public void removeTreeModelListener(TreeModelListener l) {
+		}
+		
+	}
+	
+	
 }

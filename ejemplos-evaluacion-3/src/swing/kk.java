@@ -40,7 +40,7 @@ public class kk extends JPanel {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the frame.aaaaaaaaakkkkk
 	 */
 	public kk() {
 		JButton btnNewButton = new JButton("New button");
