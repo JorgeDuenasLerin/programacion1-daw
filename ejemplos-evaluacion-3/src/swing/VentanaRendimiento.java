@@ -1,8 +1,13 @@
 package swing;
 
 import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,9 +16,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import javax.imageio.ImageIO;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -43,6 +52,11 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class VentanaRendimiento extends JFrame {
 
@@ -67,8 +81,9 @@ public class VentanaRendimiento extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws IOException 
 	 */
-	public VentanaRendimiento() {
+	public VentanaRendimiento() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 488, 472);
 		
@@ -103,6 +118,7 @@ public class VentanaRendimiento extends JFrame {
 		
 		
 		JPanel memoriaPanelo = new JPanel();
+		memoriaPanelo.setLayout( new BorderLayout() );
 		memoriaPanelo.setBorder(new TitledBorder(null, "Memoria", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		JPanel sistemaPanel = new JPanel();
@@ -149,6 +165,7 @@ public class VentanaRendimiento extends JFrame {
 		panel_3.setBorder(new TitledBorder(null, "Historial de la CPU", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		JPanel panel_4 = new JPanel();
+		panel_4.setLayout( new BorderLayout() );
 		panel_4.setBorder(new TitledBorder(null, "Historial de uso de memoria", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
@@ -187,15 +204,14 @@ public class VentanaRendimiento extends JFrame {
 					.addGap(0))
 		);
 		
-		JLabel lblAquVaLa_1 = new JLabel("Aqu\u00ED va la gr\u00E1fica de la memoria");
+		ImagenQueSeEstira lblAquVaLa_1 = new ImagenQueSeEstira("/swing/grafica-memoria.png");
 		panel_4.add(lblAquVaLa_1);
 		
 		JLabel lblAquVaLa = new JLabel("Aqu\u00ED va la gr\u00E1fica de la cpu");
 		panel_3.add(lblAquVaLa);
 		
-		JLabel lblNewLabel_9 = new JLabel("");
+		ImagenQueSeEstira lblNewLabel_9 = new ImagenQueSeEstira("/swing/memoria.png");
 		memoriaPanelo.add(lblNewLabel_9);
-		lblNewLabel_9.setIcon(new ImageIcon(VentanaRendimiento.class.getResource("/swing/memoria.png")));
 		
 		JLabel lblNewLabel_8 = new JLabel("");
 		lblNewLabel_8.setIcon(new ImageIcon(VentanaRendimiento.class.getResource("/swing/cpu.png")));
@@ -345,7 +361,19 @@ public class VentanaRendimiento extends JFrame {
 		splitDeArbol.setLeftComponent(scrollPane_2);
 		
 		JEditorPane editor = new JEditorPane();
-		splitDeArbol.setRightComponent(new JScrollPane(editor));
+		JScrollPane scrollPane_3 = new JScrollPane(editor);
+		splitDeArbol.setRightComponent(scrollPane_3);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				System.out.println(e);
+			}
+		});
+		scrollPane_3.setColumnHeaderView(comboBox);
+		
+		comboBox.setModel( new DefaultComboBoxModel( new String[]{"uno","dos","tres","cuatro"} ) );
+		
 		
 		JTree tree = new JTree();
 		tree.addMouseListener(new MouseAdapter() {
@@ -430,6 +458,64 @@ public class VentanaRendimiento extends JFrame {
 
 		@Override
 		public void removeTreeModelListener(TreeModelListener l) {
+		}
+		
+	}
+	
+	/**
+	 * Componente que pinta una imagen ajustada a su tamaño 
+	 * @author agonzalez
+	 */
+	static public class ImagenQueSeEstira extends JComponent{
+		private Image _img;
+		
+		/**
+		 * @param img La imagen a pintar (se puede conseguir con ImageIO)
+		 */
+		public ImagenQueSeEstira(Image img){
+			_img = img;
+			setOpaque(false);
+		}
+		
+		/**
+		 * @param resourceName El nombre del recurso (no es un nombre del fichero, es el nombre dentro del classpath)
+		 * @throws IOException
+		 */
+		public ImagenQueSeEstira(String resourceName) throws IOException{
+			this( ImageIO.read( ImagenQueSeEstira.class.getResourceAsStream(resourceName) ) );
+		}
+		
+		
+		/**
+		 * Pinto la imagen ajustada al tamaño actual del componente
+		 * @param g La brocha de pintar
+		 */
+		@Override
+		public void paint(Graphics g) {
+			int w = getWidth();
+			int h = getHeight();
+			
+			if( isOpaque() ){
+				// SI ES OPACO (NO SE VE LO QUE HAY DETRAS), RELLENO EL FONDO DE MI COLOR DE FONDO
+				g.setColor( getBackground() );
+				g.fillRect(0, 0, w, h);
+			}
+			
+			// PINTO LA IMAGEN ENTERA (0,0,iw,ih) EN EL COMPONENTE COMPLETO (0,0,w,h)
+			int iw = _img.getWidth(null);
+			int ih = _img.getHeight(null);
+			g.drawImage(_img, 0, 0, w, h, 0, 0, iw, ih, null);
+		}
+		/**
+		 * 
+		 * @return El tamaño de la imagen original (es mi tamaño preferido)
+		 */
+		@Override
+		public Dimension getPreferredSize() {
+			int iw = _img.getWidth(null);
+			int ih = _img.getHeight(null);
+
+			return new Dimension(iw,ih); 
 		}
 		
 	}
