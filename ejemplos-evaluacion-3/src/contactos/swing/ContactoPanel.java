@@ -1,4 +1,4 @@
-package swing.contactos;
+package contactos.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -49,7 +49,7 @@ public class ContactoPanel extends JPanel {
 		deContactoACampos();
 	}
 
-	private void deContactoACampos() {
+	public void deContactoACampos() {
 		Contacto c = getContacto();
 		nombreText.setText(c.getNombre());
 		apellidosText.setText(c.getApellidos());
@@ -59,7 +59,7 @@ public class ContactoPanel extends JPanel {
 			try {
 				InputStream in = null;
 				if (imagen == null) {
-					in = getClass().getResourceAsStream("/swing/contactos/sin-imagen.png");
+					in = getClass().getResourceAsStream("/contactos/swing/sin-imagen.png");
 				} else {
 					in = new ByteArrayInputStream(imagen);
 				}
@@ -77,7 +77,7 @@ public class ContactoPanel extends JPanel {
 		setDirty(false);
 	}
 
-	private void deCamposAContacto() {
+	public void deCamposAContacto() {
 		Contacto c = getContacto();
 		System.err.println("Antes de cambiar el contacto:" + c);
 

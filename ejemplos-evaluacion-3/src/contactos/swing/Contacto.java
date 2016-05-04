@@ -1,8 +1,18 @@
-package swing.contactos;
+package contactos.swing;
 
 import java.util.Arrays;
 
 public class Contacto {
+	
+	private int id;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	private String nombre = "<sin nombre>";
 	private String apellidos = "<sin apellidos>";
@@ -77,7 +87,7 @@ public class Contacto {
 
 	@Override
 	public String toString() {
-		return "Contacto [nombre=" + nombre + ", apellidos=" + apellidos + ", imagen=" + Arrays.toString(imagen) + "]";
+		return "Contacto [id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", imagen=" + Arrays.toString(imagen) + "]";
 	}
 	
 	
