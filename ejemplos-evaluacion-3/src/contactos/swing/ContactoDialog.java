@@ -23,26 +23,20 @@ public class ContactoDialog extends JDialog {
 
 	/**
 	 * Launch the application.
-	 * @throws SQLException 
+	 * 
+	 * @throws SQLException
 	 */
 	public static void main(String[] args) throws SQLException {
 		editaContactoConID(1);
 	}
-	
-	
 
 	public Contacto getContacto() {
 		return contactoPanel.getContacto();
 	}
 
-
-
 	public void setContacto(Contacto contacto) {
 		contactoPanel.setContacto(contacto);
 	}
-	
-
-
 
 	/**
 	 * Create the dialog.
@@ -85,15 +79,11 @@ public class ContactoDialog extends JDialog {
 		}
 	}
 
-
-
 	protected void cancelar() {
 		System.out.println("Cancelado");
 		aceptado = false;
 		setVisible(false);
 	}
-
-
 
 	protected void aceptar() {
 		System.out.println("Aceptado");
@@ -101,29 +91,37 @@ public class ContactoDialog extends JDialog {
 		aceptado = true;
 		setVisible(false);
 	}
-	
-	public static void editaContactoConID( int id ) throws SQLException{
-		
-		Connection connection = ConexionBD.creaConexion();
-		Contacto c = ContactoDAO.buscarPorID(connection ,id);
-		ContactoDialog dialog = new ContactoDialog();
-		dialog.setContacto(c);
-		dialog.setModal(true);
-		dialog.setVisible(true);
-		boolean aceptado = dialog.isAceptado();
-		System.out.println("El dialogo es aceptado:" + aceptado );
-		if( aceptado ){
-			System.out.println("Modificando");
-			ContactoDAO.modificaContacto(connection, c);
+
+	/**
+	 * @return El contacto ya cambiado, o null si no lo cambio
+	 * @param id
+	 * @throws SQLException
+	 */
+	public static Contacto editaContactoConID(int id) throws SQLException {
+
+		Connection connection = null;
+		try {
+			connection = ConexionBD.creaConexion();
+			Contacto c = ContactoDAO.buscarPorID(connection, id);
+			ContactoDialog dialog = new ContactoDialog();
+			dialog.setContacto(c);
+			dialog.setModal(true);
+			dialog.setVisible(true);
+			boolean aceptado = dialog.isAceptado();
+			System.out.println("El dialogo es aceptado:" + aceptado);
+			if (aceptado) {
+				System.out.println("Modificando");
+				ContactoDAO.modificaContacto(connection, c);
+				return c;
+			}
+		} finally {
+			connection.close();
 		}
-		connection.close();
+		return null;
 	}
-
-
 
 	private boolean isAceptado() {
 		return aceptado;
 	}
-
 
 }
