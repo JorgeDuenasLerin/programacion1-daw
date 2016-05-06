@@ -120,7 +120,7 @@ public class ContactoDialog extends JDialog {
 		return null;
 	}
 
-	private boolean isAceptado() {
+	public boolean isAceptado() {
 		return aceptado;
 	}
 

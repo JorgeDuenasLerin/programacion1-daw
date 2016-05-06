@@ -1,6 +1,7 @@
 package contactos.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -12,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,10 +22,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
 import contactos.jdbc.ConexionBD;
 import contactos.jdbc.ContactoDAO;
+import javax.swing.ListSelectionModel;
 
 public class TodosLosContactosFrame extends JFrame {
 
@@ -63,6 +67,7 @@ public class TodosLosContactosFrame extends JFrame {
 		setContentPane(contentPane);
 		
 		list = new JList<Contacto>();
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		contentPane.add( new JScrollPane(list), BorderLayout.CENTER);
 		
 		JPanel panel = new JPanel();
@@ -73,6 +78,12 @@ public class TodosLosContactosFrame extends JFrame {
 		panel.setLayout(gbl_panel);
 		
 		JButton addContactoButton = new JButton("A\u00F1adir contacto");
+		addContactoButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addContacto();
+			}
+
+		});
 		GridBagConstraints gbc_addContactoButton = new GridBagConstraints();
 		gbc_addContactoButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_addContactoButton.anchor = GridBagConstraints.NORTH;
@@ -82,6 +93,11 @@ public class TodosLosContactosFrame extends JFrame {
 		panel.add(addContactoButton, gbc_addContactoButton);
 		
 		JButton deleteContactoButton = new JButton("Borrar contacto");
+		deleteContactoButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				borrarContactoSeleccionado();
+			}
+		});
 		GridBagConstraints gbc_deleteContactoButton = new GridBagConstraints();
 		gbc_deleteContactoButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_deleteContactoButton.anchor = GridBagConstraints.NORTH;
@@ -105,6 +121,80 @@ public class TodosLosContactosFrame extends JFrame {
 		panel.add(editContactoButton, gbc_editContactoButton);
 	}
 
+	protected void borrarContactoSeleccionado() {
+		int i = list.getSelectedIndex();
+		if( i == -1 ){
+			System.out.println("No hay nada seleccionado");
+			return;
+		}
+		
+		Contacto c = list.getSelectedValue();
+		Connection connection = null;
+
+		try {
+
+			connection = ConexionBD.creaConexion();
+			ContactoDAO.borraContacto(connection, c);
+			
+
+			System.out.println("han cambiado el contacto, actualizo la lista");
+			
+			DefaultListModel<Contacto> model = (DefaultListModel<Contacto>) list.getModel();
+			model.remove(i);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		finally{
+			if( connection != null ){
+				try{
+					connection.close();
+				}
+				catch( SQLException e ){
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	
+	private void addContacto() {
+		Contacto c = new Contacto();
+		ContactoDialog d = new ContactoDialog();
+		d.setContacto(c);
+		d.setModal(true);
+		d.setVisible(true);
+		if( !d.isAceptado() ){
+			System.out.println("No quiero crearlo");
+			return;
+		}
+
+		Connection connection = null;
+
+		try {
+
+			connection = ConexionBD.creaConexion();
+			ContactoDAO.insertarContactoNuevo(connection, c);
+
+			DefaultListModel<Contacto> model = (DefaultListModel<Contacto>) list.getModel();
+			model.addElement(c);
+
+		}
+		catch( Exception e ){
+			e.printStackTrace();
+		}
+		finally{
+			if( connection != null ){
+				try{
+					connection.close();
+				}
+				catch( SQLException e ){
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	
 	protected void editarContactoSeleccionado() {
 		int i = list.getSelectedIndex();
 		if( i == -1 ){
@@ -128,13 +218,36 @@ public class TodosLosContactosFrame extends JFrame {
 	}
 
 	
-	private class RendererDeListaDeContactos extends DefaultListCellRenderer{
+	private class RendererDeListaDeContactosFeo extends DefaultListCellRenderer{
 		@Override
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,boolean cellHasFocus) {
 			JLabel ret = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			Contacto c = (Contacto) value;
-			ret.setText( "<html><font size=+3>" + c.getId()+ "</font>" + c.getNombre() + " " + c.getApellidos() + "</html>" );
+			ret.setText( "(" + index + ") " + c.getId()+ " -- " + c.getNombre() + " " + c.getApellidos() );
 			return ret;
+		}
+		
+	}
+	
+	private class RendererDeListaDeContactos implements ListCellRenderer<Contacto>{
+
+		private ResumenContactoPanel cp = new ResumenContactoPanel();
+		
+		@Override
+		public Component getListCellRendererComponent(JList<? extends Contacto> list, Contacto value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			cp.setContacto(value);
+			if( isSelected ){
+				cp.setBackground( Color.BLUE );
+			}
+			cp.setOpaque(isSelected);
+			if( cellHasFocus ){
+				cp.setBorder( BorderFactory.createEtchedBorder() );
+			}
+			else{
+				cp.setBorder( BorderFactory.createEmptyBorder() );
+			}
+			return cp;
 		}
 		
 	}

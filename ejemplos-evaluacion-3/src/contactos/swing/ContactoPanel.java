@@ -97,9 +97,6 @@ public class ContactoPanel extends JPanel {
 				// DEJO LA TRAZA POR SI ACASO
 				e.printStackTrace();
 			}
-			
-			
-			
 		}
 		
 
