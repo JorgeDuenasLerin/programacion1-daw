@@ -1,18 +1,16 @@
 package contactos.jdbc;
 
-import static contactos.jdbc.ConexionBD.*;
-import static contactos.jdbc.ContactoDAO.*;
+import static contactos.jdbc.ConexionBD.cargarElDriver;
+import static contactos.jdbc.ConexionBD.creaConexion;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Scanner;
 
 import contactos.swing.Contacto;
 
 
 
-public class InsertarContacto {
+public class PruebaDeInsertarContacto {
 
 	public static void main(String[] args) {
 		cargarElDriver();
@@ -24,8 +22,10 @@ public class InsertarContacto {
 			
 			Contacto contacto = contactoAInsertar();
 			
-			insertarContactoNuevo(connection, contacto);
-			System.out.println( leeContactos(connection) );
+			ContactoDAO.insertarContactoNuevo(connection, contacto);
+			for( Contacto c : ContactoDAO.leeContactos(connection) ){
+				System.out.println(c);
+			}
 			
 			
 			connection.close();
@@ -47,14 +47,14 @@ public class InsertarContacto {
 
 	
 	private static Contacto contactoAInsertar() {
-		Scanner in = new Scanner(System.in);
-		System.out.println("Nombre del nuevo contacto:");
-		String nombre = in.nextLine();
-		System.out.println("Apellidos del nuevo contacto:");
-		String apellidos = in.nextLine();
+		String nombre = "Un nombre";
+		String apellidos = "Un apellido";
 		Contacto contacto = new Contacto();
 		contacto.setNombre(nombre);
 		contacto.setApellidos(apellidos);
+		contacto.addDato( new DatoDeContacto(0, "email", "personal", "email@personal" ) );
+		contacto.addDato( new DatoDeContacto(0, "email", "trabajo", "email@trabajo" ) );
+		
 		return contacto;
 	}
 }

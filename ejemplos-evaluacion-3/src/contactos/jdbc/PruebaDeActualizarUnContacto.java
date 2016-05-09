@@ -2,10 +2,11 @@ package contactos.jdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import contactos.swing.Contacto;
 
-public class BorrarUnContacto {
+public class PruebaDeActualizarUnContacto {
 
 	public static void main(String[] args) {
 		ConexionBD.cargarElDriver();
@@ -15,9 +16,9 @@ public class BorrarUnContacto {
 
 			connection = ConexionBD.creaConexion();
 			
-			Contacto contacto = contactoABorrar();
+			Contacto contacto = contactoAActualizar(connection);
 			
-			boolean ok = ContactoDAO.borraContacto(connection, contacto);
+			boolean ok = ContactoDAO.modificaContacto(connection, contacto);
 			System.out.println(ok);
 			
 			
@@ -37,12 +38,14 @@ public class BorrarUnContacto {
 
 		}
 	}
-	
-	private static Contacto contactoABorrar() {
-		Contacto c = new Contacto();
-		c.setId(3);
+
+	private static Contacto contactoAActualizar(Connection connection) throws SQLException {
+		int id = 20;
+		Contacto c = ContactoDAO.buscarPorID(connection, id);
+		c.addDato( new DatoDeContacto("fax","trabajo","91999999") );
 		return c;
 	}
 
 	
+
 }

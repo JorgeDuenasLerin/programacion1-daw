@@ -13,6 +13,20 @@ import contactos.swing.Contacto;
 
 public class ContactoDAO {
 
+	
+	
+	private static void completaContactoConDatos( Connection connection, Contacto c ) throws SQLException{
+		List<DatoDeContacto> datos = DatoDeContactoDAO.leeDatosDeContacto(connection, c.getId());
+		for( DatoDeContacto dc: datos ) c.addDato(dc);
+	}
+	
+	private static void escribirDatosDeContacto( Connection connection, Contacto c ) throws SQLException{
+		DatoDeContactoDAO.borraDatosDeContacto(connection, c.getId());
+		for( DatoDeContacto dc: c.getDatosDeContacto() ) {
+			DatoDeContactoDAO.insertarDatoDeContactoNuevo(connection, dc);
+		}
+	}
+	
 	public static List<Contacto> leeContactos(Connection connection) throws SQLException {
 		Statement stmt = connection.createStatement();
 
@@ -31,13 +45,16 @@ public class ContactoDAO {
 				byte[] bytes = imagen.getBytes(1, (int) imagen.length());
 				c.setImagen(bytes);
 			}
-			
+
+			completaContactoConDatos(connection, c);
 			contactos.add(c);
 		}
 		rs.close();
 		stmt.close();
 		return contactos;
 	}
+	
+	
 
 	public static void insertarContactoNuevo(Connection connection, Contacto contacto) throws SQLException {
 		String sql = "INSERT INTO contacto(nombre,apellidos,imagen) values (?,?,?)";
@@ -49,7 +66,11 @@ public class ContactoDAO {
 		stmt.setString(2, contacto.getApellidos());
 		
 		Blob blob = connection.createBlob();
-		blob.setBytes(1, contacto.getImagen() );
+		byte[] imagen = contacto.getImagen();
+		if( imagen == null ){
+			imagen = new byte[0];
+		}
+		blob.setBytes(1, imagen );
 		stmt.setBlob(3, blob);
 		
 		
@@ -64,6 +85,8 @@ public class ContactoDAO {
 		contacto.setId(id);
 		
 		stmt.close();
+		
+		escribirDatosDeContacto(connection,contacto);
 
 		System.out.println("Número de filas afectadas:" + filas);
 	}
@@ -83,18 +106,28 @@ public class ContactoDAO {
 		stmt.setInt(4, contacto.getId());
 		int filas = stmt.executeUpdate();
 		stmt.close();
+		
+		escribirDatosDeContacto(connection,contacto);
+		
 		return filas == 1;
 
 	}
 
 	public static boolean borraContacto(Connection connection, Contacto contacto) throws SQLException {
+		
+		DatoDeContactoDAO.borraDatosDeContacto(connection, contacto.getId());
+		
 		String sql = "DELETE FROM contacto WHERE id=?";
 
+		
+		
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setInt(1, contacto.getId());
 		int filas = stmt.executeUpdate();
 		stmt.close();
 		return filas == 1;
+		
+		
 
 	}
 
@@ -126,7 +159,8 @@ public class ContactoDAO {
 			if( imagen != null ){
 				c.setImagen( imagen.getBytes(1, (int) imagen.length()) );
 			}
-			
+
+			completaContactoConDatos(connection, c);
 			contactos.add(c);
 		}
 		
