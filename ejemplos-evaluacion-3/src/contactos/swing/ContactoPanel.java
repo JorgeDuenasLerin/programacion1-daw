@@ -27,14 +27,11 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.GridLayout;
 
 public class ContactoPanel extends JPanel {
 	private JTextField nombreText;
 	private JTextField apellidosText;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
 
 	private Contacto _contacto;
 	private boolean _dirty;
@@ -239,139 +236,7 @@ public class ContactoPanel extends JPanel {
 						.addComponent(btnAadirCampo).addGap(11).addComponent(camposAdicionalesPanel,
 								GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(37, Short.MAX_VALUE)));
-
-		JLabel lblNewLabel = new JLabel("Email");
-
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Personal", "Profesional" }));
-
-		textField = new JTextField();
-		textField.setColumns(10);
-
-		JButton btnX = new JButton("X");
-
-		JLabel label = new JLabel("Email");
-
-		JComboBox comboBox_1 = new JComboBox();
-
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-
-		JButton button = new JButton("X");
-
-		JLabel label_1 = new JLabel("Email");
-
-		JComboBox comboBox_2 = new JComboBox();
-
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-
-		JButton button_1 = new JButton("X");
-
-		JLabel label_2 = new JLabel("Email");
-
-		JComboBox comboBox_3 = new JComboBox();
-
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-
-		JButton button_2 = new JButton("X");
-		GroupLayout gl_camposAdicionalesPanel = new GroupLayout(camposAdicionalesPanel);
-		gl_camposAdicionalesPanel.setHorizontalGroup(
-				gl_camposAdicionalesPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_camposAdicionalesPanel
-						.createSequentialGroup().addGap(24).addGroup(gl_camposAdicionalesPanel.createParallelGroup(
-								Alignment.LEADING)
-								.addGroup(Alignment.TRAILING, gl_camposAdicionalesPanel
-										.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 24,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18)
-										.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, 85,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(6)
-										.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-										.addGap(6).addComponent(button_1, GroupLayout.PREFERRED_SIZE, 41,
-												GroupLayout.PREFERRED_SIZE))
-								.addGroup(Alignment.TRAILING,
-										gl_camposAdicionalesPanel.createSequentialGroup()
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 24,
-														GroupLayout.PREFERRED_SIZE)
-												.addGap(18)
-												.addComponent(comboBox_3, GroupLayout.PREFERRED_SIZE, 85,
-														GroupLayout.PREFERRED_SIZE)
-												.addGap(6)
-												.addComponent(textField_3, GroupLayout.DEFAULT_SIZE, 226,
-														Short.MAX_VALUE)
-												.addGap(6).addComponent(button_2, GroupLayout.PREFERRED_SIZE, 41,
-														GroupLayout.PREFERRED_SIZE))
-								.addGroup(Alignment.TRAILING, gl_camposAdicionalesPanel.createSequentialGroup()
-										.addGroup(gl_camposAdicionalesPanel
-												.createParallelGroup(Alignment.TRAILING, false)
-												.addGroup(gl_camposAdicionalesPanel.createSequentialGroup()
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(lblNewLabel).addGap(18).addComponent(comboBox, 0,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-												.addGroup(gl_camposAdicionalesPanel.createSequentialGroup()
-														.addComponent(label, GroupLayout.PREFERRED_SIZE, 24,
-																GroupLayout.PREFERRED_SIZE)
-														.addGap(18).addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE,
-																85, GroupLayout.PREFERRED_SIZE)))
-										.addGap(6)
-										.addGroup(gl_camposAdicionalesPanel.createParallelGroup(Alignment.LEADING)
-												.addGroup(Alignment.TRAILING,
-														gl_camposAdicionalesPanel.createSequentialGroup()
-																.addComponent(textField_1, GroupLayout.DEFAULT_SIZE,
-																		226, Short.MAX_VALUE)
-																.addGap(6).addComponent(button,
-																		GroupLayout.PREFERRED_SIZE, 41,
-																		GroupLayout.PREFERRED_SIZE))
-												.addGroup(Alignment.TRAILING,
-														gl_camposAdicionalesPanel.createSequentialGroup()
-																.addComponent(textField)
-																.addPreferredGap(ComponentPlacement.RELATED)
-																.addComponent(btnX)))))
-						.addContainerGap()));
-		gl_camposAdicionalesPanel.setVerticalGroup(gl_camposAdicionalesPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_camposAdicionalesPanel.createSequentialGroup().addContainerGap()
-						.addGroup(gl_camposAdicionalesPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnX).addComponent(lblNewLabel))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_camposAdicionalesPanel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_camposAdicionalesPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(label))
-								.addGroup(gl_camposAdicionalesPanel.createSequentialGroup().addGap(1).addComponent(
-										textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-								.addComponent(button))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addGroup(gl_camposAdicionalesPanel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_camposAdicionalesPanel.createSequentialGroup().addGap(4)
-										.addComponent(label_1))
-								.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_camposAdicionalesPanel.createSequentialGroup().addGap(1).addComponent(
-										textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-								.addComponent(button_1))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addGroup(gl_camposAdicionalesPanel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_camposAdicionalesPanel.createSequentialGroup().addGap(4)
-										.addComponent(label_2))
-								.addComponent(comboBox_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_camposAdicionalesPanel.createSequentialGroup().addGap(1).addComponent(
-										textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-								.addComponent(button_2))
-						.addContainerGap(45, Short.MAX_VALUE)));
-		camposAdicionalesPanel.setLayout(gl_camposAdicionalesPanel);
+		camposAdicionalesPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		setLayout(groupLayout);
 
 	}

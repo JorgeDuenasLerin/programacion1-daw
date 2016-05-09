@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +43,11 @@ public class ResumenContactoPanel extends JPanel {
 				} else {
 					in = new ByteArrayInputStream(imagen);
 				}
-				icon.setIcon(new ImageIcon( ImageIO.read(in)));
+				BufferedImage image = ImageIO.read(in);
+				if( image != null ){
+					ImageIcon ii = new ImageIcon(image);
+					icon.setIcon(ii);
+				}
 				icon.setText("");
 
 			} catch (IOException e) {
