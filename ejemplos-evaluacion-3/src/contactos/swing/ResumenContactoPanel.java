@@ -34,6 +34,8 @@ public class ResumenContactoPanel extends JPanel {
 		nombre.setText(c.getNombre());
 		apellido.setText(c.getApellidos());
 		
+		icon.setIcon(null);
+		
 		{
 			byte[] imagen = c.getImagen();
 			try {

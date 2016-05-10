@@ -5,12 +5,15 @@ import javax.swing.JComboBox;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingUtilities;
 
 import contactos.jdbc.DatoDeContacto;
 
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DatoDeContactoPanel extends JPanel {
 	private DatoDeContacto _datoDeContacto;
@@ -38,6 +41,11 @@ public class DatoDeContactoPanel extends JPanel {
 		valorText.setColumns(10);
 		
 		JButton borrarButton = new JButton("X");
+		borrarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				eliminaEsteDatoDeContacto();
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -66,6 +74,22 @@ public class DatoDeContactoPanel extends JPanel {
 		
 	}
 	
+	protected void eliminaEsteDatoDeContacto() {
+		// TODO Auto-generated method stub
+		ContactoPanel cp = getPanelDeContactoExterior();
+		Contacto c = cp.getContacto();
+		c.removeDato(_datoDeContacto );
+		cp.deContactoACampos();
+	}
+
+	private ContactoPanel getPanelDeContactoExterior() {
+		ContactoPanel ret =  (ContactoPanel) SwingUtilities.getAncestorOfClass(ContactoPanel.class, this);
+		if( ret == null ){
+			throw new IllegalStateException( "Un DatoDeContactoPanel solo puede vivir dentro de un ContactoPanel");
+		}
+		return ret;
+	}
+
 	public void setDatoDeContacto(DatoDeContacto dc){
 		_datoDeContacto = dc;
 		delDatoDeContactoACampos();
