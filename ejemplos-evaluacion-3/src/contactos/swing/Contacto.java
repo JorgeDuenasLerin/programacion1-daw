@@ -4,10 +4,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
 import contactos.jdbc.DatoDeContacto;
 
+@Entity
 public class Contacto {
 	
+	
+	public Contacto(){
+		
+	}
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO) 
 	private int id;
 
 	public int getId() {
@@ -21,11 +37,16 @@ public class Contacto {
 		}
 	}
 
+	@Column
 	private String nombre = "<sin nombre>";
+	
+	@Column
 	private String apellidos = "<sin apellidos>";
+	
+	@Column
 	private byte[] imagen;
 	
-	
+	@OneToMany(mappedBy="contacto")
 	private List<DatoDeContacto> datos;
 	
 	private List<DatoDeContacto> getDatos(){

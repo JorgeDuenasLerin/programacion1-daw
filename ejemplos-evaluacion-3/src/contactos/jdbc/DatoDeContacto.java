@@ -1,10 +1,41 @@
 package contactos.jdbc;
 
-public class DatoDeContacto {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+import contactos.swing.Contacto;
+
+@Entity
+public class DatoDeContacto {
+	
+	
+	public DatoDeContacto() {
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO) 
+	private int idDatoDeContacto;
+
+	
+	@ManyToOne
+	@JoinColumn(name="idContacto")
+	public Contacto contacto;
+	
+	@Column(insertable=false,updatable=false)
 	private int idContacto;
+	
+	@Column
 	private String tipo;
+	
+	@Column
 	private String ambito;
+	
+	@Column
 	private String valor;
 
 	public DatoDeContacto(String tipo, String ambito, String valor) {
