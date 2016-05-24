@@ -62,7 +62,7 @@ public class PruebaConUnThread extends JFrame{
 			Document document = textPane.getDocument();
 			try {
 				document.insertString( document.getLength(), "\nCadena " + i, null);
-				Thread.sleep(10);
+				Thread.sleep(1);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
