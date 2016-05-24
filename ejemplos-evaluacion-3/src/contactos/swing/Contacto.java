@@ -9,10 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import contactos.jdbc.DatoDeContacto;
+import contactos.jdbc.Importancia;
 
 @Entity
 public class Contacto {
@@ -49,6 +51,19 @@ public class Contacto {
 	@OneToMany(mappedBy="contacto")
 	private List<DatoDeContacto> datos;
 	
+	
+	@ManyToOne
+	@JoinColumn(name="idImportancia")
+	public Importancia importancia;
+	
+	public Importancia getImportancia() {
+		return importancia;
+	}
+
+	public void setImportancia(Importancia importancia) {
+		this.importancia = importancia;
+	}
+
 	private List<DatoDeContacto> getDatos(){
 		if (datos == null) {
 			datos = new ArrayList<>();
@@ -58,6 +73,7 @@ public class Contacto {
 	
 	public void addDato( DatoDeContacto dc ){
 		dc.setIdContacto(getId());
+		dc.contacto = this;
 		getDatos().add(dc);
 	}
 	
